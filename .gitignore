@@ -1,0 +1,6 @@
+# Application files
+config.php
+# PHAR
+vendor
+composer.phar
+composer.lock
