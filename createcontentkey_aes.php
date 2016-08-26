@@ -36,12 +36,12 @@ echo "Content Key EncryptedContentKey = {$content_key->getEncryptedContentKey()}
 function createContentKey($access_token)
 {
     // Generate a random new key (16-byte is for Common and envelope encryption)...
-    //$aes_key = Utilities::generateCryptoKey(16);
-    $aes_key = Utilities::generateCryptoKey(32);
+    $aes_key = Utilities::generateCryptoKey(16);
+    //$aes_key = Utilities::generateCryptoKey(32);
 
     // Get the protection key id and etrieve the X.509 certificate using the ProtectionKeyId...
-    //$protection_key_id = $access_token->getProtectionKeyId(ContentKeyTypes::ENVELOPE_ENCRYPTION);
-    $protection_key_id = $access_token->getProtectionKeyId(ContentKeyTypes::STORAGE_ENCRYPTION);
+    $protection_key_id = $access_token->getProtectionKeyId(ContentKeyTypes::ENVELOPE_ENCRYPTION);
+    //$protection_key_id = $access_token->getProtectionKeyId(ContentKeyTypes::STORAGE_ENCRYPTION);
     $protection_key = $access_token->getProtectionKey($protection_key_id);
 
     // Assemble the payload (encrypt the content key with the public key of the X.509 Cert, create checksum, etc)...
@@ -50,8 +50,8 @@ function createContentKey($access_token)
     $content_key->setContentKey($aes_key, $protection_key);
     $content_key->setProtectionKeyId($protection_key_id);
     $content_key->setProtectionKeyType(ProtectionKeyTypes::X509_CERTIFICATE_THUMBPRINT);
-    //$content_key->setContentKeyType(ContentKeyTypes::ENVELOPE_ENCRYPTION);
-    $content_key->setContentKeyType(ContentKeyTypes::STORAGE_ENCRYPTION);
+    $content_key->setContentKeyType(ContentKeyTypes::ENVELOPE_ENCRYPTION);
+    //$content_key->setContentKeyType(ContentKeyTypes::STORAGE_ENCRYPTION);
 
     // Do our thing...
     $content_key = $access_token->createContentKey($content_key);
