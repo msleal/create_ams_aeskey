@@ -24,7 +24,7 @@ echo "\r\n--------------------------------------------------------\r\n";
 $access_token = ServicesBuilder::getInstance()->createMediaServicesService(new MediaServicesSettings($account, $secret));
 
 // Create the Content Key... 
-$content_key = createContentKey($access_token);
+$content_key = createContentKey($access_token, $argv[1]);
 
 // Here is the result....
 echo "\r\n>>> KEY\r\n";
@@ -33,7 +33,7 @@ echo "Content Key ProtectionId = {$content_key->getProtectionKeyId()}\r\n";
 echo "Content Key Checksum = {$content_key->getChecksum()}\r\n";
 echo "Content Key EncryptedContentKey = {$content_key->getEncryptedContentKey()}\r\n";
 
-function createContentKey($access_token)
+function createContentKey($access_token, $name)
 {
     // Generate a random new key (16-byte is for Common and envelope encryption)...
     $aes_key = Utilities::generateCryptoKey(16);
@@ -48,6 +48,7 @@ function createContentKey($access_token)
     // Reference: https://azure.microsoft.com/en-us/documentation/articles/media-services-rest-create-contentkey/
     $content_key = new ContentKey();
     $content_key->setContentKey($aes_key, $protection_key);
+    $content_key->setName($name);
     $content_key->setProtectionKeyId($protection_key_id);
     $content_key->setProtectionKeyType(ProtectionKeyTypes::X509_CERTIFICATE_THUMBPRINT);
     $content_key->setContentKeyType(ContentKeyTypes::ENVELOPE_ENCRYPTION);
