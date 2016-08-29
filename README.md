@@ -1,9 +1,12 @@
 ﻿### Credentials
 * Fill your details in userconfig.php
 
-### Execute
+### Install
 ```
 wget http://getcomposer.org/composer.phar
 php composer.phar install
-php -d display_errors=1 createcontentkey_aes.php
+```
+### Execute
+```
+./create_key.sh "<your-content-key-name>"
 ```
